@@ -1,6 +1,10 @@
 /* 
    base64.cpp and base64.h
 
+   base64 encoding and decoding with C++.
+
+   Version: 1.00.00
+
    Copyright (C) 2004-2017 René Nyffenegger
 
    This source code is provided 'as-is', without any express or implied
