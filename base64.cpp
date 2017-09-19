@@ -30,7 +30,6 @@
  */
 
 #include "base64.h"
-using namespace std;
 
 
 static const std::string base64_chars =
@@ -44,7 +43,7 @@ static inline bool is_base64(unsigned char c) {
 
 std::string ReplaceAll(std::string str, std::string from, std::string to) {
     size_t pos = 0;
-    while ((pos = str.find(from, pos)) != string::npos) {
+    while ((pos = str.find(from, pos)) != std::string::npos) {
         str.replace(pos, from.length(), to);
         pos += to.length();
     }
@@ -56,7 +55,7 @@ std::string RemoveAll(std::string str, std::string toErase) {
         return str;
     }
     size_t pos = 0;
-    while ((pos = str.find(toErase, pos)) != string::npos) {
+    while ((pos = str.find(toErase, pos)) != std::string::npos) {
         str.erase(pos, toErase.length());
     }
     return str;
