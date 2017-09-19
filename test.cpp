@@ -1,56 +1,53 @@
+﻿#include <iostream>
 #include "base64.h"
-#include <iostream>
+using namespace std;
+using namespace Encoding;
 
-int main() {
-  const std::string s = 
-    "René Nyffenegger\n"
-    "http://www.renenyffenegger.ch\n"
-    "passion for data\n";
+/*
+ * 
+ */
+int main(int argc, char** argv) {
 
-  std::string encoded = base64_encode(reinterpret_cast<const unsigned char*>(s.c_str()), s.length());
-  std::string decoded = base64_decode(encoded);
+    string str = R"(René Nyffenegger
+"http://www.renenyffenegger.ch
+Passion for data)";
+    cout << "Original: " << str << endl << endl;
+    str = Base64::Encode(str);
+    cout << "Encoded: " << str << endl << endl;
+    str = Base64::Decode(str);
+    cout << "Decoded: " << str << endl << endl;
 
-  std::cout << "encoded: " << std::endl << encoded << std::endl << std::endl;
-  std::cout << "decoded: " << std::endl << decoded << std::endl;
+    cout << "---Encode - No Linebreaks, Safe Url Base64 ---" << endl << Base64::Encode("HelloWorld!!!", false, true) << endl << endl;
+    cout << "---Encode - No Linebreaks, Unsafe Url Base64 ---" << endl << Base64::Encode("HelloWorld!!!", false, false) << endl << endl;
 
+    cout << "---Decode - No Linebreaks, Safe Url Base64 ---" << endl << Base64::Decode("SGVsbG9Xb3JsZCEhIQ,,") << endl << endl;
+    cout << "---Decode - No Linebreaks, Unsafe Url Base64 ---" << endl << Base64::Decode("SGVsbG9Xb3JsZCEhIQ==") << endl << endl;
 
-  // Test all possibilites of fill bytes (none, one =, two ==)
-  // References calculated with: https://www.base64encode.org/
+    string toEncode = "HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!HelloWorld!!!";
+    cout << "---Encode - Linebreaks, Safe Url Base64 ---" << endl << Base64::Encode(toEncode, true, true)  << endl << endl;
+    cout << "---Encode - Linebreaks, Unsafe Url Base64 ---" << endl << Base64::Encode(toEncode, true, false) << endl << endl;
 
-  std::string rest0_original = "abc";
-  std::string rest0_reference = "YWJj";
+    string toDecode1 = R"(SGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxv
+V29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxk
+ISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhl
+bGxvV29ybGQhISE,)";
 
-  std::string rest0_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest0_original.c_str()),
-    rest0_original.length());
-  std::string rest0_decoded = base64_decode(rest0_encoded);
+    string toDecode2 = R"(SGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxv
+V29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxk
+ISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhl
+bGxvV29ybGQhISE=)";
 
-  std::cout << "encoded:   " << rest0_encoded << std::endl;
-  std::cout << "reference: " << rest0_reference << std::endl;
-  std::cout << "decoded:   " << rest0_decoded << std::endl << std::endl;
-
-
-  std::string rest1_original = "abcd";
-  std::string rest1_reference = "YWJjZA==";
-
-  std::string rest1_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest1_original.c_str()),
-    rest1_original.length());
-  std::string rest1_decoded = base64_decode(rest1_encoded);
-
-  std::cout << "encoded:   " << rest1_encoded << std::endl;
-  std::cout << "reference: " << rest1_reference << std::endl;
-  std::cout << "decoded:   " << rest1_decoded << std::endl << std::endl;
-
-
-  std::string rest2_original = "abcde";
-  std::string rest2_reference = "YWJjZGU=";
-
-  std::string rest2_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest2_original.c_str()),
-    rest2_original.length());
-  std::string rest2_decoded = base64_decode(rest2_encoded);
-
-  std::cout << "encoded:   " << rest2_encoded << std::endl;
-  std::cout << "reference: " << rest2_reference << std::endl;
-  std::cout << "decoded:   " << rest2_decoded << std::endl << std::endl;
-
-  return 0;
+    cout << "---Decode - Linebreaks, Safe Url Base64 ---" << endl << Base64::Decode(toDecode1) << endl << endl;
+    cout << "---Decode - Linebreaks, Unsafe Url Base64 ---" << endl << Base64::Decode(toDecode2) << endl << endl;
+    
+    cout << "---Removing Linebreaks & Transform to Unsafe Url Base64---" << endl << Base64::ToUnsafeUrlBase64(Base64::RemoveLineBreaks(toDecode1)) << endl << endl;
+    cout << "---Removing Linebreaks & Transform to Safe Url Base64---" << endl << Base64::ToSafeUrlBase64(Base64::RemoveLineBreaks(toDecode2)) << endl << endl;
+    
+        string toDecode3 = R"(SGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISE,)";
+    string toDecode4 = R"(SGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISFIZWxsb1dvcmxkISEhSGVsbG9Xb3JsZCEhIUhlbGxvV29ybGQhISE=)";
+    
+    cout << "---Inserting Linebreaks Default 76 ---" << endl << Base64::InsertLineBreaks(toDecode3) << endl << endl;
+    cout << "---Inserting Linebreaks PEM Format 64 ---" << endl << Base64::InsertLineBreaks(toDecode4, LINE_BREAK_APPEAR_PEM) << endl << endl;
+    cout << "---Inserting Linebreaks Custom every 10 chars ---" << endl << Base64::InsertLineBreaks(toDecode4, 10) << endl << endl;
+    return 0;
 }
