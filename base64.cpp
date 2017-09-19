@@ -92,14 +92,14 @@ std::string Encoding::Base64::ToUnsafeUrlBase64(std::string base64) {
 }
 
 std::string Encoding::Base64::RemoveLineBreaks(std::string base64) {
-    return RemoveAll(base64, LINE_BREAK_CHAR);
+    return RemoveAll(base64, LINE_BREAKS_CHAR);
 }
 
 std::string Encoding::Base64::InsertLineBreaks(std::string base64, size_t lineBreakAppear) {
-    return InsertRepeat(base64, lineBreakAppear, LINE_BREAK_CHAR, false);
+    return InsertRepeat(base64, lineBreakAppear, LINE_BREAKS_CHAR, false);
 }
 
-std::string Encoding::Base64::Encode(std::string data, bool lineBreaks, bool toUrlSafe) {
+std::string Encoding::Base64::Encode(std::string data, bool toUrlSafe, size_t lineBreaks ) {
     size_t in_len = data.length();
     std::string ret;
     int i = 0;
@@ -141,7 +141,10 @@ std::string Encoding::Base64::Encode(std::string data, bool lineBreaks, bool toU
         }
 
     }
-    ret = (lineBreaks) ? InsertLineBreaks(ret) : ret;
+    if(lineBreaks>0)
+    {
+        ret = InsertLineBreaks(ret, lineBreaks);
+    }
     ret = toUrlSafe ? ToSafeUrlBase64(ret) : ret;
     return ret;
 }
