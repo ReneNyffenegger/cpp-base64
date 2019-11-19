@@ -131,7 +131,7 @@ std::string base64_decode(std::string const& encoded_string) {
 
   if (i) {
     for (j = 0; j < i; j++)
-      char_array_4[j] = decode_char(char_array_4[j]);;
+      char_array_4[j] = decode_char(char_array_4[j]);
 
     char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
     char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
