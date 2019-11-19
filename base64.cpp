@@ -28,7 +28,7 @@
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
    1.01.01:
-     optimize base64_encode using if-else(O(1)) instead std::string.find(O(n))
+     Optimize decode using if-else(O(1)) instead of std::string.find(O(n))
 
 */
 
