@@ -1,9 +1,9 @@
-/* 
+/*
    base64.cpp and base64.h
 
    base64 encoding and decoding with C++.
 
-   Version: 1.01.00
+   Version: 1.01.01
 
    Copyright (C) 2004-2017 René Nyffenegger
 
@@ -27,12 +27,15 @@
 
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
+   1.01.01:
+     optimize base64_encode using if-else(O(1)) instead std::string.find(O(n))
+
 */
 
 #include "base64.h"
 #include <iostream>
 
-static const std::string base64_chars = 
+static const std::string base64_chars =
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"
              "0123456789+/";
@@ -40,6 +43,24 @@ static const std::string base64_chars =
 
 static inline bool is_base64(unsigned char c) {
   return (isalnum(c) || (c == '+') || (c == '/'));
+}
+
+static inline unsigned char decode_char(unsigned char c) {
+  unsigned char result;
+  if ('a' <= c && c <= 'z') {
+    result = c - 'a' + 26;
+  } else if ('A' <= c && c <= 'Z') {
+    result = c - 'A' + 0;
+  } else if ('0' <= c && c <= '9') {
+    result = c - '0' + 26 + 26;
+  } else if (c == '+') {
+    result = 26 + 26 + 10;
+  } else if (c == '/') {
+    result = 26 + 26 + 10 + 1;
+  } else {
+    throw "Not support char.";
+  }
+  return result;
 }
 
 std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
@@ -96,7 +117,7 @@ std::string base64_decode(std::string const& encoded_string) {
     char_array_4[i++] = encoded_string[in_]; in_++;
     if (i ==4) {
       for (i = 0; i <4; i++)
-        char_array_4[i] = base64_chars.find(char_array_4[i]) & 0xff;
+        char_array_4[i] = decode_char(char_array_4[i]);
 
       char_array_3[0] = ( char_array_4[0] << 2       ) + ((char_array_4[1] & 0x30) >> 4);
       char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
@@ -110,7 +131,7 @@ std::string base64_decode(std::string const& encoded_string) {
 
   if (i) {
     for (j = 0; j < i; j++)
-      char_array_4[j] = base64_chars.find(char_array_4[j]) & 0xff;
+      char_array_4[j] = decode_char(char_array_4[j]);;
 
     char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
     char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
