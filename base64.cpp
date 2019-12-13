@@ -42,7 +42,7 @@ union Value {
     unsigned char char_array_4[4];
 }value;
 
-unsigned int remainderThree = 0x00000003;
+unsigned int remainder_three = 0x00000003;
 
 static inline bool is_base64(unsigned char c) {
   return (isalnum(c) || (c == '+') || (c == '/'));
@@ -53,7 +53,8 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
   int i = 0;
   int j = 0;
   unsigned char char_array_3[3];
-  if (remainderThree && in_len) {
+  int remainder_answer = remainder_three && in_len;
+  if (remainder_answer > 0 && remainder_answer < remainder_three) {
       radix = 1;
   }
   std::string ret((in_len / 3 + radix) << 2, '\0');
