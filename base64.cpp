@@ -40,7 +40,7 @@ static const std::string base64_chars =
 union Value {
     int number;
     unsigned char char_array_4[4];
-}value;
+};
 
 unsigned int remainder_three = 0x00000003;
 
@@ -53,6 +53,8 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
   int i = 0;
   int j = 0;
   unsigned char char_array_3[3];
+  union Value value;
+  value.number = 0;
   int remainder_answer = remainder_three && in_len;
   if (remainder_answer > 0 && remainder_answer < remainder_three) {
       radix = 1;
