@@ -1,0 +1,25 @@
+name: "cpp-base64"
+version: "v1.0.0"
+cmake_minimum_required: "3.0"
+cmake_cxx_standard: "11"
+description: "Base64 encoding and decoding with c++"
+
+authors:
+  - name: "René Nyffenegger"
+    email: "rene.nyffenegger@adp-gmbh.ch"
+
+origins:
+  - address: "https://wsjcpp.org/"
+    type: "package-registry"
+
+keywords:
+  - "c++"
+  - "base64"
+
+distribution:
+  - source-file: "base64.cpp"
+    target-file: "base64.cpp"
+    type: "source-code"
+  - source-file: "base64.h"
+    target-file: "base64.h"
+    type: "source-code"
