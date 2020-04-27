@@ -158,4 +158,9 @@ int main() {
     std::cout << "Encoding took: " << duration_encoding.count() << std::endl;
     std::cout << "Decoding took: " << duration_decoding.count() << std::endl;
 
+    if (decoded != lorem_ipsum) {
+      std::cout << "Strings differ!" << std::endl;
+      return 1;
+    }
+    return 0;
 }
