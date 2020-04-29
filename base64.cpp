@@ -30,7 +30,6 @@
 */
 
 #include "base64.h"
-#include <cctype>
 
 static const std::string base64_chars =
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -87,47 +86,46 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
 
 
     return ret;
-
 }
 
 
 std::string base64_decode(std::string const& encoded_string) {
-  size_t in_len = encoded_string.size();
-  int i = 0;
-  int in_ = 0;
-  unsigned char char_array_4[4], char_array_3[3];
-  std::string ret;
 
-  ret.reserve(encoded_string.size() / 4 * 3);
+    int length_of_string = encoded_string.length();
+    if (!length_of_string) return std::string("");
 
-  while (in_len-- && ( encoded_string[in_] != '=')) {
-    char_array_4[i++] = encoded_string[in_]; in_++;
-    if (i ==4) {
-      for (i = 0; i <4; i++) {
-        char_array_4[i] = pos_of_char(char_array_4[i]);
-      }
+    size_t in_len = length_of_string;
 
-      char_array_3[0] = ( char_array_4[0]        << 2) + ((char_array_4[1] & 0x30) >> 4);
-      char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-      char_array_3[2] = ((char_array_4[2] & 0x3) << 6) +   char_array_4[3];
+    size_t pos = 0;
 
-      for (i = 0; (i < 3); i++)
-        ret.push_back(char_array_3[i]);
-      i = 0;
+ //
+ // The approximate length (bytes) of the decoded string might be one ore
+ // two bytes smaller, depending on the amount of trailing equal signs
+ // in the encoded string. This approximation is needed to reserve
+ // enough space in the string to be returned.
+ //
+    size_t approx_length_of_decoded_string = length_of_string / 4 * 3;
+    std::string ret;
+    ret.reserve(approx_length_of_decoded_string);
+
+    while (pos < in_len) {
+
+       unsigned int pos_of_char_1 = pos_of_char(encoded_string[pos+1] );
+
+       ret.push_back( ( (pos_of_char(encoded_string[pos+0]) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4));
+
+       if (encoded_string[pos+2] != '=') {
+
+          unsigned int pos_of_char_2 = pos_of_char(encoded_string[pos+2] );
+          ret.push_back( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2));
+
+          if (encoded_string[pos+3] != '=') {
+             ret.push_back( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string[pos+3])   );
+          }
+       }
+
+       pos += 4;
     }
-  }
 
-  if (i) {
-    for (int j = 0; j < i; j++) {
-      char_array_4[j] = pos_of_char(char_array_4[j]);
-    }
-
-    char_array_3[0] = ( char_array_4[0]        << 2) + ((char_array_4[1] & 0x30) >> 4);
-    char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-
-    for (int j = 0; (j < i - 1); j++)
-      ret.push_back(char_array_3[j]);
-  }
-
-  return ret;
+    return ret;
 }
