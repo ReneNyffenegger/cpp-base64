@@ -3,7 +3,7 @@
 
    base64 encoding and decoding with C++.
 
-   Version: 1.02.00
+   Version: 1.03.00
 
    Copyright (C) 2004-2017, 2020 René Nyffenegger
 
@@ -51,49 +51,45 @@ static std::size_t pos_of_char(const unsigned char chr) {
     throw "If input is correct, this line should never be reached.";
 }
 
-static inline bool is_base64(unsigned char c) {
-  return (isalnum(c) || (c == '+') || (c == '/'));
-}
-
 std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
-  std::string ret;
-  int i = 0;
-  unsigned char char_array_3[3];
-  unsigned char char_array_4[4];
 
-  while (in_len--) {
-    char_array_3[i++] = *(bytes_to_encode++);
-    if (i == 3) {
-      char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-      char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-      char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-      char_array_4[3] = char_array_3[2] & 0x3f;
+    unsigned int len_encoded = (in_len +2) / 3 * 4;
 
-      for(i = 0; (i <4) ; i++)
-        ret.push_back(base64_chars[char_array_4[i]]);
-      i = 0;
+    std::string ret;
+    ret.reserve(len_encoded);
+
+    unsigned int pos = 0;
+
+    while (pos < in_len) {
+        ret.push_back(base64_chars[(bytes_to_encode[pos + 0] & 0xfc) >> 2]);
+
+        if (pos+1 < in_len) {
+           ret.push_back(base64_chars[((bytes_to_encode[pos + 0] & 0x03) << 4) + ((bytes_to_encode[pos + 1] & 0xf0) >> 4)]);
+
+           if (pos+2 < in_len) {
+              ret.push_back(base64_chars[((bytes_to_encode[pos + 1] & 0x0f) << 2) + ((bytes_to_encode[pos + 2] & 0xc0) >> 6)]);
+              ret.push_back(base64_chars[  bytes_to_encode[pos + 2] & 0x3f]);
+           }
+           else {
+              ret.push_back(base64_chars[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
+              ret.push_back('=');
+           }
+        }
+        else {
+
+            ret.push_back(base64_chars[(bytes_to_encode[pos + 0] & 0x03) << 4]);
+            ret.push_back('=');
+            ret.push_back('=');
+        }
+
+        pos += 3;
     }
-  }
 
-  if (i)
-  {
-    for(int j = i; j < 3; j++)
-      char_array_3[j] = '\0';
 
-    char_array_4[0] = ( char_array_3[0] & 0xfc) >> 2;
-    char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-    char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-
-    for (int j = 0; (j < i + 1); j++)
-      ret.push_back(base64_chars[char_array_4[j]]);
-
-    while((i++ < 3))
-      ret.push_back('=');
-  }
-
-  return ret;
+    return ret;
 
 }
+
 
 std::string base64_decode(std::string const& encoded_string) {
   size_t in_len = encoded_string.size();
@@ -104,7 +100,7 @@ std::string base64_decode(std::string const& encoded_string) {
 
   ret.reserve(encoded_string.size() / 4 * 3);
 
-  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
+  while (in_len-- && ( encoded_string[in_] != '=')) {
     char_array_4[i++] = encoded_string[in_]; in_++;
     if (i ==4) {
       for (i = 0; i <4; i++) {
