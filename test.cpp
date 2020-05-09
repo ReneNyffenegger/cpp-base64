@@ -85,6 +85,22 @@ int main() {
  // std::cout << "encoded:   " << rest2_encoded << std::endl;
  // std::cout << "reference: " << rest2_reference << std::endl;
  // std::cout << "decoded:   " << rest2_decoded << std::endl << std::endl;
+ //
+
+ // --------------------------------------------------------------
+ //
+ // Data that is 17 bytes long requires one padding byte when
+ // base-64 encoded. Such an encoded string could not correctly
+ // be decoded when encoded with «url semantics». This bug
+ // was discovered by https://github.com/kosniaz. The following
+ // test checks if this bug was fixed:
+ //
+    std::string a17_orig    = "aaaaaaaaaaaaaaaaa";
+    std::string a17_encoded = base64_encode(a17_orig, true);
+    if (base64_decode(a17_encoded) != a17_orig) {
+        std::cout << "Failed to encode a17" << std::endl;
+        all_tests_passed = false;
+    }
 
     if (all_tests_passed) return 0;
     return 1;
