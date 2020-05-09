@@ -5,7 +5,7 @@
    More information at
      https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp
 
-   Version: 2.rc.00 (release candidate)
+   Version: 2.rc.01 (release candidate)
 
    Copyright (C) 2004-2017, 2020 René Nyffenegger
 
@@ -170,7 +170,7 @@ std::string base64_decode(std::string const& encoded_string, bool remove_linebre
           unsigned int pos_of_char_2 = pos_of_char(encoded_string[pos+2] );
           ret.push_back( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2));
 
-          if (encoded_string[pos+3] != '=') {
+          if (encoded_string[pos+3] != '=' && encoded_string[pos+3] != '.') {
              ret.push_back( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string[pos+3])   );
           }
        }
