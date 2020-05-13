@@ -5,7 +5,7 @@ int main() {
 
   bool all_tests_passed = true;
 
-  const std::string orig = 
+  const std::string orig =
     "René Nyffenegger\n"
     "http://www.renenyffenegger.ch\n"
     "passion for data\n";
@@ -101,6 +101,30 @@ int main() {
         std::cout << "Failed to encode a17" << std::endl;
         all_tests_passed = false;
     }
+
+
+ // --------------------------------------------------------------
+
+#if __cplusplus >= 201703L
+ //
+ // Test the string_view interface (which required C++17)
+ //
+    std::string_view sv_orig    = "foobarbaz";
+    std::string_view sv_encoded = base64_encode(sv_orig);
+
+    if (sv_encoded != "Zm9vYmFyYmF6") {
+       std::cout << "Failed to encode with string_view" << std::endl;
+       all_tests_passed = false;
+    }
+
+    std::string_view sv_decoded = base64_decode(sv_encoded);
+
+    if (sv_decoded != sv_orig) {
+       std::cout << "Failed to decode with string_view" << std::endl;
+       all_tests_passed = false;
+    }
+
+#endif
 
     if (all_tests_passed) return 0;
     return 1;
