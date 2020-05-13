@@ -96,9 +96,55 @@ int main() {
  // test checks if this bug was fixed:
  //
     std::string a17_orig    = "aaaaaaaaaaaaaaaaa";
-    std::string a17_encoded = base64_encode(a17_orig, true);
-    if (base64_decode(a17_encoded) != a17_orig) {
+    std::string a17_encoded     = base64_encode(a17_orig, false);
+    std::string a17_encoded_url = base64_encode(a17_orig, true );
+
+    if (a17_encoded != "YWFhYWFhYWFhYWFhYWFhYWE=") {
         std::cout << "Failed to encode a17" << std::endl;
+        all_tests_passed = false;
+    }
+
+    if (a17_encoded_url != "YWFhYWFhYWFhYWFhYWFhYWE.") {
+        std::cout << "Failed to encode a17 (url)" << std::endl;
+        all_tests_passed = false;
+    }
+
+    if (base64_decode(a17_encoded_url) != a17_orig) {
+        std::cout << "Failed to decode a17 (url)" << std::endl;
+        all_tests_passed = false;
+    }
+
+    if (base64_decode(a17_encoded    ) != a17_orig) {
+        std::cout << "Failed to decode a17 (no url)" << std::endl;
+        all_tests_passed = false;
+    }
+
+ // --------------------------------------------------------------
+
+ // characters 63 and 64 / URL encoding
+
+    std::string s_6364 = "\x03" "\xef" "\xff" "\xf9";
+
+    std::string s_6364_encoded     = base64_encode(s_6364, false);
+    std::string s_6364_encoded_url = base64_encode(s_6364, true );
+
+    if (s_6364_encoded    != "A+//+Q==") {
+        std::cout << "Failed to encode_6364 (no url)" << std::endl;
+        all_tests_passed = false;
+    }
+
+    if (s_6364_encoded_url!= "A-__-Q..") {
+        std::cout << "Failed to encode_6364 (url)" << std::endl;
+        all_tests_passed = false;
+    }
+
+    if (base64_decode(s_6364_encoded    ) != s_6364) {
+        std::cout << "Failed to decode s_6364_encoded" << std::endl;
+        all_tests_passed = false;
+    }
+
+    if (base64_decode(s_6364_encoded_url) != s_6364) {
+        std::cout << "Failed to decode s_6364_encoded_url" << std::endl;
         all_tests_passed = false;
     }
 
