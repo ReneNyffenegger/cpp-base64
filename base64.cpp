@@ -101,9 +101,9 @@ static std::string encode(String s, bool url) {
   return base64_encode(reinterpret_cast<const unsigned char*>(s.data()), s.length(), url);
 }
 
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, bool url) {
+std::string base64_encode(unsigned char const* bytes_to_encode, size_t in_len, bool url) {
 
-    unsigned int len_encoded = (in_len +2) / 3 * 4;
+    size_t len_encoded = (in_len +2) / 3 * 4;
 
     unsigned char trailing_char = url ? '.' : '=';
 
@@ -176,7 +176,7 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
 
     }
 
-    int length_of_string = encoded_string.length();
+    size_t length_of_string = encoded_string.length();
     if (!length_of_string) return std::string("");
 
     size_t in_len = length_of_string;
