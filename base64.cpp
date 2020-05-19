@@ -49,7 +49,7 @@ const char* base64_chars[2] = {
              "0123456789"
              "-_"};
 
-static std::size_t pos_of_char(const unsigned char chr) {
+static unsigned int pos_of_char(const unsigned char chr) {
  //
  // Return the position of chr within base64_encode()
  //
