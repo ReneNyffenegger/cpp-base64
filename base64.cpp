@@ -5,7 +5,7 @@
    More information at
      https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp
 
-   Version: 2.rc.03 (release candidate)
+   Version: 2.rc.04 (release candidate)
 
    Copyright (C) 2004-2017, 2020 René Nyffenegger
 
@@ -49,7 +49,7 @@ const char* base64_chars[2] = {
              "0123456789"
              "-_"};
 
-static std::size_t pos_of_char(const unsigned char chr) {
+static unsigned int pos_of_char(const unsigned char chr) {
  //
  // Return the position of chr within base64_encode()
  //
@@ -101,9 +101,9 @@ static std::string encode(String s, bool url) {
   return base64_encode(reinterpret_cast<const unsigned char*>(s.data()), s.length(), url);
 }
 
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, bool url) {
+std::string base64_encode(unsigned char const* bytes_to_encode, size_t in_len, bool url) {
 
-    unsigned int len_encoded = (in_len +2) / 3 * 4;
+    size_t len_encoded = (in_len +2) / 3 * 4;
 
     unsigned char trailing_char = url ? '.' : '=';
 
@@ -176,7 +176,7 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
 
     }
 
-    int length_of_string = encoded_string.length();
+    size_t length_of_string = encoded_string.length();
     if (!length_of_string) return std::string("");
 
     size_t in_len = length_of_string;
@@ -196,15 +196,15 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
 
        unsigned int pos_of_char_1 = pos_of_char(encoded_string[pos+1] );
 
-       ret.push_back( ( (pos_of_char(encoded_string[pos+0]) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4));
+       ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string[pos+0]) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
 
        if (encoded_string[pos+2] != '=' && encoded_string[pos+2] != '.') { // accept URL-safe base 64 strings, too, so check for '.' also.
 
           unsigned int pos_of_char_2 = pos_of_char(encoded_string[pos+2] );
-          ret.push_back( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2));
+          ret.push_back(static_cast<std::string::value_type>( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2)));
 
           if (encoded_string[pos+3] != '=' && encoded_string[pos+3] != '.') {
-             ret.push_back( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string[pos+3])   );
+             ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string[pos+3])   ));
           }
        }
 
