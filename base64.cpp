@@ -33,6 +33,8 @@
 
 #include "base64.h"
 
+#include <stdexcept>
+
  //
  // Depending on the url parameter in base64_chars, one of
  // two sets of base64 characters needs to be chosen.
@@ -60,7 +62,7 @@ static unsigned int pos_of_char(const unsigned char chr) {
     else if (chr == '+' || chr == '-') return 62; // Be liberal with input and accept both url ('-') and non-url ('+') base 64 characters (
     else if (chr == '/' || chr == '_') return 63; // Ditto for '/' and '_'
 
-    throw "If input is correct, this line should never be reached.";
+    throw std::runtime_error("Input is not valid base64-encoded data.");
 }
 
 static std::string insert_linebreaks(std::string str, size_t distance) {
