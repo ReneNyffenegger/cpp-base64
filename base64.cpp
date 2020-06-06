@@ -33,6 +33,7 @@
 
 #include "base64.h"
 
+#include <algorithm>
 #include <stdexcept>
 
  //
@@ -167,10 +168,7 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
 
        std::string copy(encoded_string);
 
-       size_t pos=0;
-       while ((pos = copy.find("\n", pos)) != std::string::npos) {
-           copy.erase(pos, 1);
-       }
+       copy.erase(std::remove(copy.begin(), copy.end(), '\n'), copy.end());
 
        return base64_decode(copy, false);
 
