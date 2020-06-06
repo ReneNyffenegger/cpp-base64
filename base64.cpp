@@ -70,9 +70,7 @@ static std::string insert_linebreaks(std::string str, size_t distance) {
  //
  // Provided by https://github.com/JomaCorpFX, adapted by me.
  //
-    if (!str.length()) {
-        return "";
-    }
+    if (str.empty()) return str;
 
     size_t pos = distance;
 
