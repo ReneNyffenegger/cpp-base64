@@ -161,11 +161,9 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
  // or std::string_view (requires at least C++17)
  //
 
-    if (remove_linebreaks) {
+    if (encoded_string.empty()) return std::string();
 
-       if (! encoded_string.length() ) {
-           return "";
-       }
+    if (remove_linebreaks) {
 
        std::string copy(encoded_string);
 
@@ -178,10 +176,7 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
 
     }
 
-    size_t length_of_string = encoded_string.length();
-    if (!length_of_string) return std::string("");
-
-    size_t in_len = length_of_string;
+    size_t in_len = encoded_string.length();
     size_t pos = 0;
 
  //
@@ -190,7 +185,7 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
  // in the encoded string. This approximation is needed to reserve
  // enough space in the string to be returned.
  //
-    size_t approx_length_of_decoded_string = length_of_string / 4 * 3;
+    size_t approx_length_of_decoded_string = in_len / 4 * 3;
     std::string ret;
     ret.reserve(approx_length_of_decoded_string);
 
