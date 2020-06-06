@@ -40,7 +40,7 @@
  // two sets of base64 characters needs to be chosen.
  // They differ in their last two characters.
  //
-const char* base64_chars[2] = {
+static const char* base64_chars[2] = {
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"
              "0123456789"
