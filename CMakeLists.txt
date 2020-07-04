@@ -3,6 +3,7 @@ project(cpp-base64 CXX)
 
 include(CheckCXXCompilerFlag)
 
+option(BASE64_ENABLE_STATIC_LIB "Build static library" ON)
 option(BASE64_ENABLE_TESTS "Build test executables and libraries" OFF)
 option(BASE64_WARNINGS_AS_ERRORS "Treat warnings as errors" OFF)
 
@@ -47,6 +48,16 @@ add_library(base64 SHARED
     )
 set(TARGETS base64)
 add_library(base64::base64 ALIAS base64)
+
+# Static library target
+if(${BASE64_ENABLE_STATIC_LIB})
+    add_library(base64_static STATIC
+            src/base64.cpp
+        )
+    set_property(TARGET base64_static PROPERTY POSITION_INDEPENDENT_CODE ON)
+    list(APPEND TARGETS base64_static)
+    add_library(base64::base64_static ALIAS base64_static)
+endif()
 
 if (${BASE64_ENABLE_TESTS})
     enable_testing()
