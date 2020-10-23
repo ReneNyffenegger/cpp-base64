@@ -5,7 +5,7 @@
    More information at
      https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp
 
-   Version: 2.rc.05 (release candidate)
+   Version: 2.rc.07 (release candidate)
 
    Copyright (C) 2004-2017, 2020 René Nyffenegger
 
@@ -41,7 +41,7 @@
  // two sets of base64 characters needs to be chosen.
  // They differ in their last two characters.
  //
-const char* base64_chars[2] = {
+static const char* base64_chars[2] = {
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"
              "0123456789"
@@ -166,24 +166,18 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
  // or std::string_view (requires at least C++17)
  //
 
-    if (remove_linebreaks) {
+    if (encoded_string.empty()) return std::string();
 
-       if (! encoded_string.length() ) {
-           return "";
-       }
+    if (remove_linebreaks) {
 
        std::string copy(encoded_string);
 
        copy.erase(std::remove(copy.begin(), copy.end(), '\n'), copy.end());
 
        return base64_decode(copy, false);
-
     }
 
     size_t length_of_string = encoded_string.length();
-    if (!length_of_string) return std::string("");
-
-    size_t in_len = length_of_string;
     size_t pos = 0;
 
  //
@@ -196,7 +190,7 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
     std::string ret;
     ret.reserve(approx_length_of_decoded_string);
 
-    while (pos < in_len) {
+    while (pos < length_of_string) {
 
        unsigned int pos_of_char_1 = pos_of_char(encoded_string[pos+1] );
 

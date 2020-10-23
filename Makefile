@@ -11,6 +11,7 @@ WARNINGS=                    \
    -Winit-self               \
    -Wlogical-op              \
    -Wmissing-include-dirs    \
+   -Wmissing-declarations    \
    -Wnoexcept                \
    -Wold-style-cast          \
    -Woverloaded-virtual      \
