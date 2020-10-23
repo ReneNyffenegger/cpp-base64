@@ -1,6 +1,6 @@
 //
 //  base64 encoding and decoding with C++.
-//  Version: 2.rc.05 (release candidate)
+//  Version: 2.rc.06 (release candidate)
 //
 
 #ifndef BASE64_H_C0CE2A47_D10E_42C9_A27C_C883944E704A
