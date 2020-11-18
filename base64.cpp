@@ -228,7 +228,7 @@ std::string base64_encode_mime(std::string const& s) {
    return encode_mime(s);
 }
 
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L) || (_MSC_VER >= 1910)
 //
 // Interface with std::string_view rather than const std::string&
 // Requires C++17
@@ -251,4 +251,4 @@ std::string base64_decode(std::string_view s, bool remove_linebreaks) {
    return decode(s, remove_linebreaks);
 }
 
-#endif  // __cplusplus >= 201703L
+#endif // (__cplusplus >= 201703L) || (_MSC_VER >= 1910)
