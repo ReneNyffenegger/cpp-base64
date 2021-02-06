@@ -196,12 +196,12 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
 
        ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string[pos+0]) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
 
-       if (encoded_string[pos+2] != '=' && encoded_string[pos+2] != '.') { // accept URL-safe base 64 strings, too, so check for '.' also.
+       if ((pos + 2 < length_of_string - 1) && encoded_string[pos+2] != '=' && encoded_string[pos+2] != '.') { // accept URL-safe base 64 strings, too, so check for '.' also.
 
           unsigned int pos_of_char_2 = pos_of_char(encoded_string[pos+2] );
           ret.push_back(static_cast<std::string::value_type>( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2)));
 
-          if (encoded_string[pos+3] != '=' && encoded_string[pos+3] != '.') {
+          if ((pos + 3 < length_of_string - 1) && encoded_string[pos+3] != '=' && encoded_string[pos+3] != '.') {
              ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string[pos+3])   ));
           }
        }
