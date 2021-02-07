@@ -175,6 +175,47 @@ int main() {
         all_tests_passed = false;
     }
 
+ // ----------------------------------------------
+
+    std::string unpadded_input   = "YWJjZGVmZw"; // Note the 'missing' "=="
+    std::string unpadded_decoded = base64_decode(unpadded_input);
+    if (unpadded_decoded != "abcdefg") {
+        std::cout << "Failed to decode unpadded input " << unpadded_input << std::endl;
+        all_tests_passed = false;
+    }
+
+    unpadded_input   = "YWJjZGU"; // Note the 'missing' "="
+    unpadded_decoded = base64_decode(unpadded_input);
+    if (unpadded_decoded != "abcde") {
+        std::cout << "Failed to decode unpadded input " << unpadded_input << std::endl;
+        std::cout << unpadded_decoded << std::endl;
+        all_tests_passed = false;
+    }
+
+    unpadded_input   = "";
+    unpadded_decoded = base64_decode(unpadded_input);
+    if (unpadded_decoded != "") {
+        std::cout << "Failed to decode unpadded input " << unpadded_input << std::endl;
+        std::cout << unpadded_decoded << std::endl;
+        all_tests_passed = false;
+    }
+
+    unpadded_input   = "YQ";
+    unpadded_decoded = base64_decode(unpadded_input);
+    if (unpadded_decoded != "a") {
+        std::cout << "Failed to decode unpadded input " << unpadded_input << std::endl;
+        std::cout << unpadded_decoded << std::endl;
+        all_tests_passed = false;
+    }
+
+    unpadded_input   = "YWI";
+    unpadded_decoded = base64_decode(unpadded_input);
+    if (unpadded_decoded != "ab") {
+        std::cout << "Failed to decode unpadded input " << unpadded_input << std::endl;
+        std::cout << unpadded_decoded << std::endl;
+        all_tests_passed = false;
+    }
+
  // --------------------------------------------------------------
 
 #if __cplusplus >= 201703L
