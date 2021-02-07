@@ -148,6 +148,32 @@ int main() {
         all_tests_passed = false;
     }
 
+    std::string numbers =
+        "one two three four five six seven eight nine ten eleven twelve "
+        "thirteen fourteen fivteen sixteen seventeen eighteen nineteen "
+        "twenty twenty-one";
+    std::string encoded_mime = base64_encode_mime(numbers);
+
+    std::string encoded_mime_expeced =
+         "b25lIHR3byB0aHJlZSBmb3VyIGZpdmUgc2l4IHNldmVuIGVpZ2h0IG5pbmUgdGVuIGVsZXZlbiB0\n"
+         "d2VsdmUgdGhpcnRlZW4gZm91cnRlZW4gZml2dGVlbiBzaXh0ZWVuIHNldmVudGVlbiBlaWdodGVl\n"
+         "biBuaW5ldGVlbiB0d2VudHkgdHdlbnR5LW9uZQ==";
+
+    if (encoded_mime != encoded_mime_expeced) {
+        std::cout << "Failed: base64_encode_mime s_6364_encoded" << std::endl;
+        all_tests_passed = false;
+    }
+
+ //
+ // Set 2nd parameter remove_linebreaks to true in order decode a
+ // mime encoded string:
+ //
+    std::string decoded_mime = base64_decode(encoded_mime, true);
+
+    if (decoded_mime != numbers) {
+        std::cout << "Failed: base64_decode(..., true)" << std::endl;
+        all_tests_passed = false;
+    }
 
  // --------------------------------------------------------------
 

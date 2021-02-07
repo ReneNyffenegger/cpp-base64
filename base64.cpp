@@ -5,9 +5,9 @@
    More information at
      https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp
 
-   Version: 2.rc.07 (release candidate)
+   Version: 2.rc.08 (release candidate)
 
-   Copyright (C) 2004-2017, 2020 René Nyffenegger
+   Copyright (C) 2004-2017, 2020, 2021 René Nyffenegger
 
    This source code is provided 'as-is', without any express or implied
    warranty. In no event will the author be held liable for any damages
