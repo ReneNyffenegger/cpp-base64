@@ -5,7 +5,12 @@ int main() {
 
   bool all_tests_passed = true;
 
-  const std::string orig =
+//
+// Note: this file (test.cpp) must be encoded in UTF-8
+// for the following test, otherwise, the test item
+// fails.
+//
+   const std::string orig =
     "René Nyffenegger\n"
     "http://www.renenyffenegger.ch\n"
     "passion for data\n";
