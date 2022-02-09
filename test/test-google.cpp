@@ -1,4 +1,4 @@
-#include "base64.h"
+#include "../include/cpp-base64/base64.h"
 #include <iostream>
 
 #include <gtest/gtest.h>

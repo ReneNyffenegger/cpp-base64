@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.12)
+project("cpp-base64" LANGUAGES CXX VERSION 2.0.8
+  DESCRIPTION "Base64 encoding and decoding with C++"
+  HOMEPAGE_URL "https://github.com/CodeFinder2/cpp-base64")
+include(GNUInstallDirs)
+
+add_library(${PROJECT_NAME} src/base64.cpp)
+target_include_directories(${PROJECT_NAME} SYSTEM
+  PUBLIC $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME} DESTINATION include)
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+export(TARGETS ${PROJECT_NAME} FILE ${PROJECT_NAME}Config.cmake)
