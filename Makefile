@@ -36,14 +36,14 @@ base64-test-11: base64-11.o test-11.o
 base64-test-17: base64-17.o test-17.o
 	g++ base64-17.o test-17.o -o $@
 
-base64-11.o: base64.cpp base64.h
-	g++ -std=c++11 $(WARNINGS) -c base64.cpp -o base64-11.o
+base64-11.o: src/base64.cpp include/cpp-base64/base64.h
+	g++ -std=c++11 $(WARNINGS) -c src/base64.cpp -o base64-11.o -I include
 
-base64-17.o: base64.cpp base64.h
-	g++ -std=c++17 $(WARNINGS) -c base64.cpp -o base64-17.o
+base64-17.o: src/base64.cpp include/cpp-base64/base64.h
+	g++ -std=c++17 $(WARNINGS) -c src/base64.cpp -o base64-17.o -I include
 
-test-11.o: test.cpp
-	g++ -std=c++11 $(WARNINGS) -c test.cpp -o test-11.o
+test-11.o: test/test.cpp
+	g++ -std=c++11 $(WARNINGS) -c test/test.cpp -o test-11.o -I include
 
-test-17.o: test.cpp
-	g++ -std=c++17 $(WARNINGS) -c test.cpp -o test-17.o
+test-17.o: test/test.cpp
+	g++ -std=c++17 $(WARNINGS) -c test/test.cpp -o test-17.o -I include

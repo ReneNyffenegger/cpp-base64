@@ -1,2 +1,2 @@
-g++ test.cpp base64.cpp -o test-base64
+g++ test/test.cpp src/base64.cpp -o test-base64 -I include
 ./test-base64
