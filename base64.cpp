@@ -5,7 +5,7 @@
    More information at
      https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp
 
-   Version: 2.rc.08 (release candidate)
+   Version: 2.rc.09 (release candidate)
 
    Copyright (C) 2004-2017, 2020, 2021 René Nyffenegger
 
@@ -160,7 +160,7 @@ std::string base64_encode(unsigned char const* bytes_to_encode, size_t in_len, b
 }
 
 template <typename String>
-static std::string decode(String encoded_string, bool remove_linebreaks) {
+static std::string decode(String const& encoded_string, bool remove_linebreaks) {
  //
  // decode(…) is templated so that it can be used with String = const std::string&
  // or std::string_view (requires at least C++17)
@@ -204,33 +204,33 @@ static std::string decode(String encoded_string, bool remove_linebreaks) {
     // The last chunk produces at least one and up to three bytes.
     //
 
-       size_t pos_of_char_1 = pos_of_char(encoded_string[pos+1] );
+       size_t pos_of_char_1 = pos_of_char(encoded_string.at(pos+1) );
 
     //
     // Emit the first output byte that is produced in each chunk:
     //
-       ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string[pos+0]) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
+       ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string.at(pos+0)) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
 
        if ( ( pos + 2 < length_of_string  )       &&  // Check for data that is not padded with equal signs (which is allowed by RFC 2045)
-              encoded_string[pos+2] != '='        &&
-              encoded_string[pos+2] != '.'            // accept URL-safe base 64 strings, too, so check for '.' also.
+              encoded_string.at(pos+2) != '='        &&
+              encoded_string.at(pos+2) != '.'            // accept URL-safe base 64 strings, too, so check for '.' also.
           )
        {
        //
        // Emit a chunk's second byte (which might not be produced in the last chunk).
        //
-          unsigned int pos_of_char_2 = pos_of_char(encoded_string[pos+2] );
+          unsigned int pos_of_char_2 = pos_of_char(encoded_string.at(pos+2) );
           ret.push_back(static_cast<std::string::value_type>( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2)));
 
           if ( ( pos + 3 < length_of_string )     &&
-                 encoded_string[pos+3] != '='     &&
-                 encoded_string[pos+3] != '.'
+                 encoded_string.at(pos+3) != '='     &&
+                 encoded_string.at(pos+3) != '.'
              )
           {
           //
           // Emit a chunk's third byte (which might not be produced in the last chunk).
           //
-             ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string[pos+3])   ));
+             ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string.at(pos+3))   ));
           }
        }
 

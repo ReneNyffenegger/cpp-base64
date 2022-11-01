@@ -222,6 +222,23 @@ int main() {
     }
 
  // --------------------------------------------------------------
+ //
+ //    2022-11-01
+ //       Replace
+ //          encoded_string[…] with encoded_sring.at(…)
+ //       in
+ //          decode()     
+ //
+    try {
+       std::string not_null_terminated = std::string(1, 'a');
+       std::string not_null_decoded    = base64_decode(not_null_terminated);
+
+       std::cout << "Expected a std::out_of_range exception" << std::endl;
+       all_tests_passed = false;
+    }
+    catch (std::out_of_range const&) {}
+
+ // --------------------------------------------------------------
 
 #if __cplusplus >= 201703L
  //
