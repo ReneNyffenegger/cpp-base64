@@ -7,7 +7,7 @@
 
    Version: 2.rc.09 (release candidate)
 
-   Copyright (C) 2004-2017, 2020, 2021 René Nyffenegger
+   Copyright (C) 2004-2017, 2020-2022 René Nyffenegger
 
    This source code is provided 'as-is', without any express or implied
    warranty. In no event will the author be held liable for any damages
@@ -212,8 +212,8 @@ static std::string decode(String const& encoded_string, bool remove_linebreaks) 
        ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string.at(pos+0)) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
 
        if ( ( pos + 2 < length_of_string  )       &&  // Check for data that is not padded with equal signs (which is allowed by RFC 2045)
-              encoded_string.at(pos+2) != '='        &&
-              encoded_string.at(pos+2) != '.'            // accept URL-safe base 64 strings, too, so check for '.' also.
+              encoded_string.at(pos+2) != '='     &&
+              encoded_string.at(pos+2) != '.'         // accept URL-safe base 64 strings, too, so check for '.' also.
           )
        {
        //
@@ -223,7 +223,7 @@ static std::string decode(String const& encoded_string, bool remove_linebreaks) 
           ret.push_back(static_cast<std::string::value_type>( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2)));
 
           if ( ( pos + 3 < length_of_string )     &&
-                 encoded_string.at(pos+3) != '='     &&
+                 encoded_string.at(pos+3) != '='  &&
                  encoded_string.at(pos+3) != '.'
              )
           {
