@@ -34,7 +34,12 @@
 #include "base64.h"
 
 #include <algorithm>
+
+#if defined(__cpp_exceptions)
 #include <stdexcept>
+#else
+#include <cassert>
+#endif
 
  //
  // Depending on the url parameter in base64_chars, one of
@@ -67,7 +72,11 @@ static unsigned int pos_of_char(const unsigned char chr) {
  // 2020-10-23: Throw std::exception rather than const char*
  //(Pablo Martin-Gomez, https://github.com/Bouska)
  //
+#if defined(__cpp_exceptions)
     throw std::runtime_error("Input is not valid base64-encoded data.");
+#else
+    assert(!"Input is not valid base64-encoded data.");
+#endif
 }
 
 static std::string insert_linebreaks(std::string str, size_t distance) {
@@ -280,3 +289,4 @@ std::string base64_decode(std::string_view s, bool remove_linebreaks) {
 }
 
 #endif  // __cplusplus >= 201703L
+
