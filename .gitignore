@@ -4,3 +4,5 @@ test-base64
 *.o
 *.exe
 build/
+base64-test-11
+base64-test-17
