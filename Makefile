@@ -47,3 +47,7 @@ test-11.o: test.cpp
 
 test-17.o: test.cpp
 	g++ -std=c++17 $(WARNINGS) -c test.cpp -o test-17.o
+
+clean:
+	rm -f *.o
+	rm -f base64-test-*
