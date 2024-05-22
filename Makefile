@@ -27,8 +27,8 @@ WARNINGS=                    \
    -fdiagnostics-show-option
 
 test: base64-test-11 base64-test-17
-	base64-test-11
-	base64-test-17
+	./base64-test-11
+	./base64-test-17
 
 base64-test-11: base64-11.o test-11.o
 	g++ base64-11.o test-11.o -o $@
