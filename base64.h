@@ -8,9 +8,9 @@
 
 #include <string>
 
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L) || (_MSC_VER >= 1910)
 #include <string_view>
-#endif  // __cplusplus >= 201703L
+#endif  // (__cplusplus >= 201703L) || (_MSC_VER >= 1910)
 
 std::string base64_encode     (std::string const& s, bool url = false);
 std::string base64_encode_pem (std::string const& s);
@@ -19,7 +19,7 @@ std::string base64_encode_mime(std::string const& s);
 std::string base64_decode(std::string const& s, bool remove_linebreaks = false);
 std::string base64_encode(unsigned char const*, size_t len, bool url = false);
 
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L) || (_MSC_VER >= 1910)
 //
 // Interface with std::string_view rather than const std::string&
 // Requires C++17
@@ -30,6 +30,6 @@ std::string base64_encode_pem (std::string_view s);
 std::string base64_encode_mime(std::string_view s);
 
 std::string base64_decode(std::string_view s, bool remove_linebreaks = false);
-#endif  // __cplusplus >= 201703L
+#endif  // (__cplusplus >= 201703L) || (_MSC_VER >= 1910)
 
 #endif /* BASE64_H_C0CE2A47_D10E_42C9_A27C_C883944E704A */
